@@ -3,4 +3,11 @@
     <string name="question_text">Constantinople is the biggest city in Turkey</string>
     <string name="true_button">true</string>
     <string name="false_button">false</string>
+    <string name="incorrect">incorrect</string>
+    <string name="question_dog_1">Dogs were domesticated because they could digest human food</string>
+    <string name="question_dog_2">Dogs are the best animal</string>
+    <string name="question_dog_3">Cats are better than dogs</string>
+    <string name="question_dog_4">Dogs hate eating butter</string>
+    <string name="question_dog_5">All dogs love Dan and Mollie</string>
+    <string name="next">next</string>
 </resources>

@@ -10,6 +10,7 @@ class QuizActivity : AppCompatActivity() {
 
     private lateinit var trueButton : Button
     private lateinit var falseButton : Button
+    private lateinit var nextButton :Button
     private lateinit var question : TextView
 
     private val questions : List<Question> = listOf(
@@ -19,23 +20,38 @@ class QuizActivity : AppCompatActivity() {
             Question(R.string.question_dog_4, false),
             Question(R.string.question_dog_5, true)
     )
-    private val currentIndex: Int = 0
+    private var currentIndex: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quiz)
 
-        val currentQuestion = questions[currentIndex]
-
         question = findViewById(R.id.question_text) as TextView
+        updateQuestion(questions[currentIndex])
 
-        question.setText(currentQuestion.id)
+        nextButton = findViewById(R.id.next_button) as Button
+        setUpNextButton()
+
+        falseButton = findViewById(R.id.false_button) as Button
+        setUpButton(falseButton, false)
 
         trueButton = findViewById(R.id.true_button) as Button
-        falseButton = findViewById(R.id.false_button) as Button
+        setUpButton(trueButton, true)
+    }
 
-        setUpButton(falseButton, checkAnswer(currentQuestion, false))
-        setUpButton(trueButton, checkAnswer(currentQuestion, true))
+    private fun updateCurrentIndex(): Int {
+        currentIndex = if (currentIndex == questions.count() - 1) 0 else ++currentIndex
+        return currentIndex
+    }
+
+    private fun setUpNextButton() {
+        nextButton.setOnClickListener {
+            updateQuestion(questions[updateCurrentIndex()])
+        }
+    }
+
+    private fun updateQuestion(currentQuestion: Question) {
+        question.setText(currentQuestion.id)
     }
 
     private fun checkAnswer(question: Question, buttonValue: Boolean): Int {
@@ -46,9 +62,9 @@ class QuizActivity : AppCompatActivity() {
         }
     }
 
-    private fun setUpButton(button: Button, id: Int) {
+    private fun setUpButton(button: Button, value: Boolean) {
         button.setOnClickListener {
-            Toast.makeText(this@QuizActivity, id,
+            Toast.makeText(this@QuizActivity, checkAnswer(questions[currentIndex], value),
                     Toast.LENGTH_SHORT).show()
         }
     }

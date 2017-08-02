@@ -1,5 +1,6 @@
 package com.mollie.geoquiz
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -11,6 +12,7 @@ class QuizActivity : AppCompatActivity() {
     private lateinit var trueButton : Button
     private lateinit var falseButton : Button
     private lateinit var nextButton :Button
+    private lateinit var cheatButton : Button
     private lateinit var question : TextView
 
     private val questions : List<Question> = listOf(
@@ -37,6 +39,16 @@ class QuizActivity : AppCompatActivity() {
 
         trueButton = findViewById(R.id.true_button) as Button
         setUpButton(trueButton, true)
+
+        cheatButton = findViewById(R.id.cheat_button) as Button
+        setUpCheatButton()
+    }
+
+    private fun setUpCheatButton() {
+        cheatButton.setOnClickListener {
+            val intent = CheatActivity.newIntent(this@QuizActivity, questions[currentIndex])
+            startActivity(intent)
+        }
     }
 
     private fun updateCurrentIndex(): Int {

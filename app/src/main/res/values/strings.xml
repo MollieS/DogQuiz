@@ -9,4 +9,8 @@
     <string name="question_dog_4">Dogs hate eating butter</string>
     <string name="question_dog_5">All dogs love Dan and Mollie</string>
     <string name="next">next</string>
+    <string name="cheat_warning">are you sure?</string>
+    <string name="cheat_button">cheat</string>
+    <string name="show_answer">show answer</string>
+    <string name="back">back</string>
 </resources>

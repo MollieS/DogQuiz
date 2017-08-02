@@ -1,5 +1,6 @@
 package com.mollie.geoquiz
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
@@ -12,15 +13,18 @@ class CheatActivity : AppCompatActivity() {
 
     private lateinit var answerText: TextView
     private lateinit var showButton: Button
+    private lateinit var cheatListener: CheatOnClick
 
     companion object {
         var EXTRA_ANSWER_IS_TRUE = "com.mollie.geoquiz.answer"
+        val EXTRA_CHEAT_WAS_SHOWN = "com.mollie.geoquiz.cheat_was_shown"
 
         fun newIntent(context: Context, question: Question): Intent {
             var intent = Intent(context, CheatActivity::class.java)
             intent.putExtra(CheatActivity.EXTRA_ANSWER_IS_TRUE, question.isTrue)
             return intent
         }
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,14 +36,16 @@ class CheatActivity : AppCompatActivity() {
         val intent: Intent = intent
         val isTrue = intent.getBooleanExtra(EXTRA_ANSWER_IS_TRUE, false)
 
+        cheatListener = CheatOnClick(this@CheatActivity, answerText, isTrue)
+
         showButton = findViewById(R.id.show_button) as Button
-        showButton.setOnClickListener(CheatOnClick(this@CheatActivity, answerText, isTrue))
+        showButton.setOnClickListener(cheatListener)
     }
 }
 
 class CheatOnClick(val activity: CheatActivity, val answerText: TextView, val isTrue: Boolean) : View.OnClickListener {
 
-    private var hasBeenClicked: Boolean = false
+    var hasBeenClicked: Boolean = false
 
     override fun onClick(view: View) {
         if(hasBeenClicked) {
@@ -56,8 +62,9 @@ class CheatOnClick(val activity: CheatActivity, val answerText: TextView, val is
     }
 
     fun goBack() {
+        val intent: Intent = Intent()
+        intent.putExtra(CheatActivity.EXTRA_CHEAT_WAS_SHOWN, hasBeenClicked)
+        activity.setResult(Activity.RESULT_OK, intent)
         activity.finish()
     }
 }
-
-

@@ -13,4 +13,5 @@
     <string name="cheat_button">cheat</string>
     <string name="show_answer">show answer</string>
     <string name="back">back</string>
+    <string name="cheating">cheating is wrong</string>
 </resources>

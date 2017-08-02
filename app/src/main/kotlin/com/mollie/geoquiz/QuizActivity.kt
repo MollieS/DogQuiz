@@ -23,6 +23,7 @@ class QuizActivity : AppCompatActivity() {
             Question(R.string.question_dog_5, true)
     )
     private var currentIndex: Int = 0
+    private var cheatWasShown: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,14 +45,22 @@ class QuizActivity : AppCompatActivity() {
         setUpCheatButton()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(data is Intent) {
+            cheatWasShown = data.getBooleanExtra(CheatActivity.EXTRA_CHEAT_WAS_SHOWN, false)
+        }
+    }
+
     private fun setUpCheatButton() {
         cheatButton.setOnClickListener {
             val intent = CheatActivity.newIntent(this@QuizActivity, questions[currentIndex])
-            startActivity(intent)
+            startActivityForResult(intent, 0)
         }
     }
 
     private fun updateCurrentIndex(): Int {
+        cheatWasShown = false
         currentIndex = if (currentIndex == questions.count() - 1) 0 else ++currentIndex
         return currentIndex
     }
@@ -67,10 +76,14 @@ class QuizActivity : AppCompatActivity() {
     }
 
     private fun checkAnswer(question: Question, buttonValue: Boolean): Int {
-        if (question.isTrue == buttonValue) {
-            return R.id.correct
+        if(cheatWasShown) {
+            return R.string.cheating
         } else {
-            return R.id.incorrect
+            if (question.isTrue == buttonValue) {
+                return R.id.correct
+            } else {
+                return R.id.incorrect
+            }
         }
     }
 
